@@ -1,0 +1,23 @@
+.empty-favs {
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  text-align: center;
+  color: white;
+      font-family: "Fredoka", sans-serif;
+   
+    
+}
+
+.empty-favs h1 {
+  font-size: 2rem;
+  font-weight: 400;
+}
+
+.empty-favs p {
+  font-size: 2rem;
+  opacity: 0.8;
+}

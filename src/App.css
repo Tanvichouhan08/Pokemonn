@@ -13,7 +13,26 @@ body {
       transparent 15%
     ),
     radial-gradient(circle at 40% 75%, #ffcd052b, transparent 30%),
-    linear-gradient(90deg, #08123a 0%, #02081f 45%, #010616 100%);
+    linear-gradient(90deg, #070e29 0%, #02081f 45%, #010616 100%);
 
   background-attachment: fixed;
 }
+/* body {
+  min-height: 100vh;
+
+  background:
+    radial-gradient(
+      circle at 90% 70%,
+      rgba(255, 40, 40, 0.18),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 10% 20%,
+      rgba(39, 75, 255, 0.119),
+      transparent 15%
+    ),
+    radial-gradient(circle at 40% 75%, #ffcd052b, transparent 30%),
+    linear-gradient(90deg, #08123a 0%, #02081f 45%, #010616 100%);
+
+  background-attachment: fixed;
+} */

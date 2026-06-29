@@ -1,5 +1,8 @@
 import "./Cardd.css";
+import { useNavigate } from "react-router-dom";
 const Card = ({ pokemon,favorites,setFavorites}) => {
+  
+  const navigate = useNavigate();
   const isFav = favorites.includes(pokemon.id);
   const toggleFavorite = () => {
   if (isFav) {
@@ -17,9 +20,9 @@ const Card = ({ pokemon,favorites,setFavorites}) => {
 };
 
 return (
-    <div className="card">
+    <div className="card"  onClick={() => navigate(`/pokemon/${pokemon.id}`)}>
       <div className="top">
-        <h2 className="hp">
+        <h2 className="hpp">
           <span>HP</span>{pokemon.hp}
         </h2>
       </div>
@@ -33,8 +36,12 @@ return (
      <div className="namefav">
        <h1 className="name">{pokemon.name}</h1>
       <button
+       onClick={(e) => {
+    e.stopPropagation();   
+    toggleFavorite();
+  }}
     className={`fav-btn ${isFav ? "active" : ""}`}
-    onClick={toggleFavorite}
+    
   >
     ♡
   </button>

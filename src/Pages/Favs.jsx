@@ -20,8 +20,13 @@ if (favPokemon.length === 0) {
   );
 }
   return (
-    <div>
-      <div className="cards">
+    <div className='favor'>
+      <div className="fav-header">
+  <div className="fav-title">Favorites</div>
+  <div className="fav-count" id="countLabel">Showing 20 of 40</div>
+</div>
+
+      <div className="fav-cards">
   {favPokemon.map((pokemon) => (
     <Card
       key={pokemon.id}
@@ -30,7 +35,7 @@ if (favPokemon.length === 0) {
       setFavorites={setFavorites}
     />
   ))}
-</div>
+    </div>
     </div>
   )
 }

@@ -1,0 +1,310 @@
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap');
+
+@font-face {
+  font-family: "Quebec Serial";
+  src: url("./Component/Quebec Serial Bold.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+}
+.parent{
+    display: flex;
+    flex-direction: column;
+}
+.topp{
+    min-height: 80px;
+    width: 100%;
+}
+.left-block{
+    display:flex;
+    border:1px solid rgba(255,255,255,.08);
+    border-radius: 18px;
+}
+
+.pokemon-info{
+    flex:1;
+    padding:3rem;
+    color:white;
+}
+.id{
+    font-family: 'Bebas Neue', sans-serif ;
+    font-weight: 800;
+    margin: 0;
+    font-size: 1.8rem;
+    color:#69758b;
+    transform: translateY(1.2rem);
+}
+.namee{
+    font-size:3rem;
+    font-family: 'Bebas Neue', sans-serif ;
+    text-transform: uppercase;
+    font-weight: 800;
+    margin: 0;
+}
+
+.types{
+    display:flex;
+    gap:0.5rem;
+    margin-bottom:0.8rem;
+}
+
+.types span{
+    transform: translateX(-1.6rem);
+    padding:0.5rem 1.6rem;
+    border-radius:999px;
+    font-size:1rem;
+    font-weight:800;
+    font-family: 'Rajdhani', sans-serif;
+    margin: 0;
+}
+
+.info-grid{
+    display:grid;
+    grid-template-columns: repeat(2, minmax(10rem, max-content));
+    gap:0.4rem;
+}
+
+.info-card{
+    /* background:#101f3f; */
+    border:1px solid rgba(255,255,255,.08);
+    
+    border-radius:10px;
+    padding:0.8rem;
+}
+
+.info-card span{
+    display:block;
+    font-size:.9rem;
+    /* color:#7e93c4; */
+        color:#69758b;
+
+    font-family: 'Rajdhani', sans-serif;
+    font-weight:700;
+    letter-spacing:1px;
+    margin-bottom: 0.1rem;
+}
+
+.info-card h3{
+    margin:0;
+    font-size:16px;
+    font-weight:600;
+    font-family: "Sora", sans-serif;
+
+}
+.category{
+    text-transform: capitalize;
+}
+
+.action-buttons{
+    display:flex;
+    gap:0.4rem;
+    margin-top:0.8rem;
+    
+}
+
+.action-buttons button{
+    width: 10rem;
+    padding:0.8rem;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:700;
+}
+
+.team-btn{
+    background:transparent;
+    border:1px solid #3f5da1;
+    color:white;
+}
+
+.fav{
+    background:transparent;
+    border:1px solid #3f5da1;
+    color:white;
+
+}
+.gender{
+    display:flex;
+    align-items:center;
+    padding-left: 0.3rem;
+    gap:0.2rem;
+}
+.male {
+  color: #3B82F6 !important;
+}
+
+.female {
+  color: #EC4899 !important;
+}
+
+.genderless {
+  color: #9CA3AF !important;
+}
+.middle-block{
+     width: 550px;      
+    
+    flex: 0 0 550px; 
+    height: 33rem;  
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+}
+.img{
+    height: 20rem;
+    position: absolute; 
+    z-index: 2;
+}
+.dynamic{
+    position: absolute;
+   height: 32rem;
+   animation: rotate 8s linear infinite;
+   display: block;
+}
+@keyframes rotate{
+    from{
+        transform: rotate(0deg);
+    }
+    to{
+        transform: rotate(360deg);
+    }
+}
+.bg-circle{
+    position: absolute;
+    height: 21rem;
+    z-index: 1;
+}
+.hero-section{
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+}
+.right-block{
+    width: 500px;
+}
+
+.stats{
+   
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:18px;
+    padding:1.4rem;
+    width:100%;
+}
+
+.stats h3{
+    color:#F5C518;
+    font-family:"Rajdhani",sans-serif;
+    font-size:1rem;
+    font-weight:700;
+    letter-spacing:2px;
+    margin-bottom:1.4rem;
+}
+
+.stat{
+    display:grid;
+    grid-template-columns:70px 35px 1fr;
+    align-items:center;
+    gap:1rem;
+    margin-bottom:1rem;
+}
+
+.stat span:first-child{
+    color:#69758b;
+    font-family:"Rajdhani",sans-serif;
+    font-weight:700;
+    font-size:0.9rem;
+}
+
+.value{
+    color:#F5C518;
+    font-family:"Inter",sans-serif;
+    font-weight:600;
+    text-align:right;
+}
+
+.progress{
+    height:6px;
+    background:#2b3548;
+    border-radius:999px;
+    overflow:hidden;
+}
+
+.fill{
+    height:100%;
+    border-radius:999px;
+    transition:width .8s ease;
+}
+
+.hp{
+    background:#FFD43B;
+}
+
+.attack{
+    background:#FF8C1A;
+}
+
+.defense{
+    background:#00E676;
+}
+
+.spatk{
+    background:#A855F7;
+}
+
+.spdef{
+    background:#18C9FF;
+}
+
+.speed{
+    background:#FF3FA4;
+}
+
+.total{
+    display:flex;
+    justify-content:space-between;
+    align-items:end;
+    margin-top:1rem;
+    padding-top:0.6rem;
+    border-top:1px solid rgba(255,255,255,.08);
+}
+
+.total span:first-child{
+    color:#69758b;
+    font-family:"Rajdhani",sans-serif;
+    font-weight:700;
+    letter-spacing:1px;
+}
+
+.total span:last-child{
+    color:#FFD43B;
+    font-size:1.6rem;
+    font-family:"Inter",sans-serif;
+    font-weight:700;
+}
+.weakness-block{
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:18px;
+    width: 100%;
+    margin-top: 0.6rem;
+    padding-bottom: 1.4rem;
+}
+.weakness-block h3{
+    color:#F5C518;
+    font-family:"Rajdhani",sans-serif;
+    font-size:1rem;
+    font-weight:700;
+    letter-spacing:2px;
+    margin-bottom:1rem;
+    padding-top: 1.8rem;
+    padding-left: 1.8rem;
+}
+.weaknesses{
+    display:flex;
+    flex-wrap:wrap;
+    gap:0.4rem;
+    margin-left: 2rem;
+}

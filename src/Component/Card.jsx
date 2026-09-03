@@ -23,7 +23,7 @@ return (
     <div className="card"  onClick={() => navigate(`/pokemon/${pokemon.id}`)}>
       <div className="top">
         <h2 className="hpp">
-          <span>HP</span>{pokemon.hp}
+          <span>HP</span>{pokemon.id}
         </h2>
       </div>
 

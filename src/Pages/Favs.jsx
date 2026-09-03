@@ -1,6 +1,7 @@
 import React from 'react'
 import Card from "../Component/Card";
 import "./Favs.css";
+
 const Favs = ({
   pokemonList,
   favorites,
@@ -19,11 +20,12 @@ if (favPokemon.length === 0) {
     </div>
   );
 }
+
   return (
     <div className='favor'>
       <div className="fav-header">
   <div className="fav-title">Favorites</div>
-  <div className="fav-count" id="countLabel">Showing 20 of 40</div>
+  <div className="fav-count" id="countLabel">Showing {favPokemon.length} of {favorites.length}</div>
 </div>
 
       <div className="fav-cards">

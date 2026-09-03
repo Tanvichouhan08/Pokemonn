@@ -11,114 +11,97 @@ import Details from "./Pages/Detail";
 import { Routes, Route } from "react-router-dom";
 function App() {
   const [pokemonList, setPokemonList] = useState([]);
+  const [pokemonUrls, setPokemonUrls] = useState([]);
   const [favorites, setFavorites] = useState([]);
-   const getData = async () => {
-  try {
-    const response = await axios.get(
-      "https://pokeapi.co/api/v2/pokemon?limit=50"
-    );
+  const [loadedCount, setLoadedCount] = useState(24);
+  const [isLoading, setIsLoading] = useState(false);
+  const [selectedType, setSelectedType] = useState("all");
+  const fetchPokemonList = async () => {
+    try {
+      const response = await axios.get(
+        "https://pokeapi.co/api/v2/pokemon?limit=1200"
+      );
 
-    const pokemonDetails = await Promise.all(
-      response.data.results.map(async (pokemon) => {
-        const details = await axios.get(pokemon.url);
-        const typeResponses = await Promise.all(
-  details.data.types.map((t) =>
-    axios.get(t.type.url)
-  )
-);
-const weaknesses = [
-  ...new Set(
-    typeResponses.flatMap((type) =>
-      type.data.damage_relations.double_damage_from.map(
-        (d) => d.name
-      )
-    )
-  ),
-];
-       const species = await axios.get(
-        details.data.species.url
-          );
-       
-        return {
-          weaknesses,
-          id: details.data.id,
-          name: details.data.name,
+      setPokemonUrls(response.data.results);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-          hp: details.data.stats.find(
-            (s) => s.stat.name === "hp"
-          )?.base_stat,
+  const loadPokemonBatch  = async (start, count) => {
+    try {
+      const batch = pokemonUrls.slice(start, start + count);
 
-          attack: details.data.stats.find(
-            (s) => s.stat.name === "attack"
-          )?.base_stat,
+      const pokemonCardDetails = await Promise.all(
+        batch.map(async (pokemon) => {
+          const details = await axios.get(pokemon.url);
 
-          defense: details.data.stats.find(
-            (s) => s.stat.name === "defense"
-          )?.base_stat,
+          return {
+            id: details.data.id,
+            name: details.data.name,
 
-          image:
-            details.data.sprites.other[
-              "official-artwork"
-            ].front_default,
+            hp: details.data.stats.find(
+              (s) => s.stat.name === "hp"
+            )?.base_stat,
 
-          types: details.data.types.map(
-            (t) => t.type.name
+            image:
+              details.data.sprites.other[
+                "official-artwork"
+              ].front_default,
 
-          ),
-          category: species.data.genera.find(
-            (g) => g.language.name === "en"
-          )?.genus,
-          height: details.data.height / 10,
-          weight: details.data.weight / 10,
-          ability: details.data.abilities.map(
-          (a) => a.ability.name
-           ),
-           genderRate: species.data.gender_rate,
-           specialAttack: details.data.stats.find(
-            (s) => s.stat.name === "special-attack"
-          )?.base_stat,
-          specialDefense: details.data.stats.find(
-            (s) => s.stat.name === "special-defense"
-          )?.base_stat,
-          speed: details.data.stats.find(
-          (s) => s.stat.name === "speed"
-           )?.base_stat,
-          
-           genderRate: species.data.gender_rate,
+            types: details.data.types.map(
+              (t) => t.type.name
+            ),
+          };
+        })
+      );
 
-          stats: details.data.stats
-            .filter((stat) =>
-              ["attack", "defense", "speed"].includes(
-                stat.stat.name
-              )
-            )
-            .map((stat) => ({
-              name: stat.stat.name,
-              value: stat.base_stat,
-            })),
-        };
-      })
-    );
+      setPokemonList((prev) => [...prev, ...pokemonCardDetails]);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-    setPokemonList(pokemonDetails);
-  } catch (error) {
-    console.log(error);
-  }
-};
+  const handleLoadMore = async () => {
+    if (isLoading) return;
+
+    setIsLoading(true);
+
+    await loadPokemonBatch(loadedCount, 24);
+
+    setLoadedCount((prev) => prev + 24);
+
+    setIsLoading(false);
+  };
+
+  
+  useEffect(() => {
+    fetchPokemonList();
+  }, []);
 
   useEffect(() => {
-    getData();
-  }, []);
+    if (pokemonUrls.length > 0) {
+      loadPokemonBatch(0, 24);
+    }
+  }, [pokemonUrls]);
+
+  
+
   return (
     <div>
       <Navbar />
       <Routes>
         { /* HOME */ }
         <Route path="/" element={<Hero 
-        favorites={favorites}
-       setFavorites={setFavorites}
+        pokemonUrls={pokemonUrls}
+       favorites={favorites}
+       setFavorites={setFavorites}  
        pokemonList={pokemonList}
-
+       handleLoadMore={handleLoadMore}
+      totalPokemon={pokemonUrls.length}
+       isLoading={isLoading}
+       selectedType={selectedType}
+       setSelectedType={setSelectedType}
       />} />
       {/* FAVS */}
         <Route path="/favorites" element={<Favs 
@@ -126,7 +109,7 @@ const weaknesses = [
         pokemonList={pokemonList}
         setFavorites={setFavorites}
         />} />
-         <Route path="/pokemon/:id" element={<Details pokemonDetails={pokemonList} />} />
+         <Route path="/pokemon/:id" element={<Details pokemonUrls={pokemonUrls}/>} />
       </Routes>
       
     </div>

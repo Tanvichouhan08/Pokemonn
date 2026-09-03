@@ -1,16 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@100..900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@100;200;300;400;500;600;700;800;900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;500;600;700;800;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap');
 
-@font-face {
-  font-family: "Quebec Serial";
-  src: url("./Component/Quebec Serial Bold.otf") format("opentype");
-  font-weight: 400;
-  font-style: normal;
-}
 .parent{
     display: flex;
     flex-direction: column;
@@ -307,4 +299,158 @@
     flex-wrap:wrap;
     gap:0.4rem;
     margin-left: 2rem;
+}
+
+.weaknesses .type-pill{
+    font-weight: 700;
+    color: white;
+}
+.des{
+    width: 20rem;
+    margin-top: 2rem;
+     color:#ffffffa0;
+    font-family:"Rajdhani",sans-serif;
+    font-weight:700;
+}
+
+.topp{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    
+}
+.previous{
+        color: black;
+        margin: 0 60px;
+            text-transform: capitalize;
+        font-family:"Sora",sans-serif;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+}
+.next{
+        color: black;
+        margin: 0 60px;
+        text-transform: capitalize;
+        font-family:"Sora",sans-serif;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+}
+.previous,
+.next{
+    padding:.85rem 2rem;
+    color:#fff;
+    background-color: #18c9ff00;
+    border-radius:16px;
+    transition:.3s;
+    border: 2px solid rgba(255, 255, 255, 0.08);
+    box-shadow:
+        0 0 15px rgba(77,216,255,.6);
+}
+
+.previous:hover,
+.next:hover{
+    transform:translateY(-3px);
+}
+
+.evo-pill{
+    height: 4rem;
+    width: 24rem;
+    border-radius: 999px;
+    margin-top: 6rem;
+    transform: translateX(-2rem);
+    border: 2px solid rgba(255, 255, 255, 0.08);
+    box-shadow:
+        0 0 15px rgba(77,216,255,.6);
+        color: white;
+            display: flex;
+            align-items: center;
+}
+.evo-pill h3{
+    margin-left: 5rem;
+    font-size: 1.8rem;
+    font-family: 'Rajdhani', sans-serif;
+}
+.evolution-chain{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:1.8rem;
+    margin:5rem 0;
+    margin-left:5rem;
+    width: fit-content;
+    padding: 2rem 2rem;
+    flex-wrap:wrap;
+    border: 2px solid rgba(255, 255, 255, 0.08);
+    border-radius: 1.4rem;
+    box-shadow:
+        0 0 15px rgba(77,216,255,.6);
+}
+
+.evo-card{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    cursor:pointer;
+    transition:.3s ease;
+}
+
+.evo-card:hover{
+    transform:translateY(-6px);
+}
+
+.evo-image{
+    width:120px;
+    height:120px;
+    border-radius:22px;
+    background:linear-gradient(180deg,#33475d,#24384d);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    box-shadow:
+        inset 0 2px 8px rgba(255,255,255,.08),
+        0 10px 25px rgba(0,0,0,.35);
+}
+
+.evo-image img{
+    width:90%;
+    height:90%;
+    object-fit:contain;
+}
+
+.evo-id{
+    margin-top:.8rem;
+    color:#89b5d8;
+    font-size:.95rem;
+    font-weight:700;
+    letter-spacing:1px;
+    font-family: 'Bebas Neue', sans-serif;
+
+}
+
+.evo-card h3{
+    margin:.3rem 0 .7rem;
+    color:white;
+    font-size:1.1rem;
+    text-transform:capitalize;
+    font-family: 'Bebas Neue', sans-serif;
+}
+
+.evo-types{
+    display:flex;
+    gap:.5rem;
+    flex-direction: column;
+}
+.evo-types .type-pill {
+    font-weight: 700;
+    font-family: 'Rajdhani', sans-serif;
+}
+.evo-arrow{
+    font-size:2rem;
+    color:#ffd400;
+    text-shadow:
+        0 0 8px #ffd400,
+        0 0 18px #ffd400;
 }

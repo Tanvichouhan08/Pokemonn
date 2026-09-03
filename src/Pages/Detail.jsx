@@ -1,20 +1,143 @@
 import { useParams } from "react-router-dom";
-
+import { useEffect, useState } from "react";
+import axios from "axios";
 import "./Detail.css"
+import { useNavigate } from "react-router-dom";
+import React from "react";
 import pokemon_bg from "../Component/pokemon_bg.png";
 import pokemon_circle_bg from "../Component/pokemon_circle_bg.png";
-function Details({ pokemonDetails }) {
+function Details({pokemonUrls}) {
   const { id } = useParams();
-  const pokemon = pokemonDetails.find(
-  (p) => p.id === Number(id)
+  const navigate = useNavigate();
+const [pokemon, setPokemon] = useState(null);
+const [loading, setLoading] = useState(true);
+
+const fetchPokemonDetails = async () => {
+  try {
+    setLoading(true);
+
+    const details = await axios.get(
+      `https://pokeapi.co/api/v2/pokemon/${id}`
+    );
+
+    const typeResponses = await Promise.all(
+      details.data.types.map((t) =>
+        axios.get(t.type.url)
+      )
+    );
+
+    
+    const species = await axios.get(
+  details.data.species.url
 );
-if (!pokemon) {
-  return <h1>Loading...</h1>;
+
+// Evolution Chain
+const evolution = await axios.get(
+  species.data.evolution_chain.url
+);
+
+const evo = [];
+
+let current = evolution.data.chain;
+
+while (current) {
+  const evoId = current.species.url
+    .split("/")
+    .filter(Boolean)
+    .pop();
+
+  const evoDetails = await axios.get(
+    `https://pokeapi.co/api/v2/pokemon/${evoId}`
+  );
+
+  evo.push({
+    id: evoId,
+    name: current.species.name,
+    image:
+      evoDetails.data.sprites.other["official-artwork"].front_default,
+    types: evoDetails.data.types.map((t) => t.type.name),
+  });
+
+  current = current.evolves_to[0];
 }
+    const weaknesses = [
+      ...new Set(
+        typeResponses.flatMap((type) =>
+          type.data.damage_relations.double_damage_from.map(
+            (d) => d.name
+          )
+        )
+      ),
+    ];
 
+    setPokemon({
+      weaknesses,
+      description: species.data.flavor_text_entries.find(
+      (entry) => entry.language.name === "en"
+      )?.flavor_text.replace(/\f/g, " "),
 
+      id: details.data.id,
+      evolution: evo,
+      name: details.data.name,
 
-  const GenderDisplay = ({ genderRate }) => {
+      hp: details.data.stats.find(
+        (s) => s.stat.name === "hp"
+      )?.base_stat,
+
+      attack: details.data.stats.find(
+        (s) => s.stat.name === "attack"
+      )?.base_stat,
+
+      defense: details.data.stats.find(
+        (s) => s.stat.name === "defense"
+      )?.base_stat,
+
+      image:
+        details.data.sprites.other[
+          "official-artwork"
+        ].front_default,
+
+      types: details.data.types.map(
+        (t) => t.type.name
+      ),
+
+      category: species.data.genera.find(
+        (g) => g.language.name === "en"
+      )?.genus,
+
+      height: details.data.height / 10,
+
+      weight: details.data.weight / 10,
+
+      abilities: details.data.abilities.map(
+        (a) => a.ability.name
+      ),
+
+      genderRate: species.data.gender_rate,
+
+      specialAttack: details.data.stats.find(
+        (s) => s.stat.name === "special-attack"
+      )?.base_stat,
+
+      specialDefense: details.data.stats.find(
+        (s) => s.stat.name === "special-defense"
+      )?.base_stat,
+
+      speed: details.data.stats.find(
+        (s) => s.stat.name === "speed"
+      )?.base_stat,
+    });
+
+  } catch (error) {
+    console.log(error);
+  } finally {
+    setLoading(false);
+  }
+};
+useEffect(() => {
+  fetchPokemonDetails();
+}, [id]);
+const GenderDisplay = ({ genderRate }) => {
   if (genderRate === -1) {
     return <i className="genderless">⚲</i>;
   }
@@ -35,18 +158,71 @@ if (!pokemon) {
     </>
   );
 };
+useEffect(() => {
+  const keyNav = (e) => {
+    if (e.key === "ArrowLeft" && Number(id) > 1) {
+      navigate(`/pokemon/${Number(id) - 1}`);
+    }
+
+    if (e.key === "ArrowRight"  && Number(id) < pokemonUrls.length) {
+      navigate(`/pokemon/${Number(id) + 1}`);
+    }
+  };
+
+  window.addEventListener("keydown", keyNav);
+
+  return () => {
+    window.removeEventListener("keydown", keyNav);
+  };
+}, [id, navigate]);
+if (loading || !pokemon) {
+  return <h1>Loading...</h1>;
+}
 
 const stats = [
-  { name: "HP", value: pokemon.hp, color: "hp" },
-  { name: "ATTACK", value: pokemon.attack, color: "attack" },
-  { name: "DEFENSE", value: pokemon.defense, color: "defense" },
-  { name: "SP. ATK", value: pokemon.specialAttack, color: "spatk" },
-  { name: "SP. DEF", value: pokemon.specialDefense, color: "spdef" },
-  { name: "SPEED", value: pokemon.speed, color: "speed" },
+  {
+    name: "HP",
+    value: pokemon.hp,
+    color: "hp",
+  },
+  {
+    name: "ATTACK",
+    value: pokemon.attack,
+    color: "attack",
+  },
+  {
+    name: "DEFENSE",
+    value: pokemon.defense,
+    color: "defense",
+  },
+  {
+    name: "SP. ATK",
+    value: pokemon.specialAttack,
+    color: "spatk",
+  },
+  {
+    name: "SP. DEF",
+    value: pokemon.specialDefense,
+    color: "spdef",
+  },
+  {
+    name: "SPEED",
+    value: pokemon.speed,
+    color: "speed",
+  },
 ];
+const previous = pokemonUrls[id - 2];
+const next = pokemonUrls[id];
   return (
     <div className="parent">
-      <div className="topp"> </div>
+      <div className="topp">
+        <button className="previous"
+       onClick={() => navigate(`/pokemon/${Number(id) - 1}`)}
+        >← {pokemon.id -1} {previous?.name}</button> 
+        <button className="next"
+        onClick={() => navigate(`/pokemon/${Number(id) + 1}`)}
+        >{pokemon.id +1} {next?.name} →</button>
+        </div>
        <div className="hero-section">
      <div className="left-block">
 
@@ -96,6 +272,7 @@ const stats = [
       <button className="team-btn">ADD TO TEAM</button>
       <button className="fav">❤ Favourite</button>
     </div>
+    <p className="des">{pokemon.description}</p>
 </div>
            </div>
    <div className="middle-block">
@@ -138,46 +315,51 @@ const stats = [
             {pokemon.weaknesses.map((weakness) => (
               <span
                 key={weakness}
-                className={`type-pill ${weakness.toLowerCase()}`}
+                className={`type-pill ${weakness.toLowerCase()}`} 
               >
                 {weakness}
               </span>
             ))}
         </div>
         </div>
-
-
-
-
-
-
-
   </div>
      </div>  
-     {/* hero-sec-endss */}
+     <div className="evo-pill">
+      <h3>Evolution</h3>
+     </div>
+        <div className="evolution-chain">
+  {pokemon.evolution.map((evo, index) => (
+    <React.Fragment key={evo.id}>
+      <div
+        className="evo-card"
+        onClick={() => navigate(`/pokemon/${evo.id}`)}
+      >
+        <div className="evo-image">
+          <img src={evo.image} alt={evo.name} />
+        </div>
 
+        <span className="evo-id">
+          #{String(evo.id).padStart(4, "0")}
+        </span>
 
-{/* <p>{pokemon.height} m</p>
-<p>{pokemon.weight} kg</p>
+        <h3>{evo.name}</h3>
 
-<p>{pokemon.category}</p>
+        <div className="evo-types">
+          {evo.types.map(type => (
+            <span key={type} className={`type-pill ${type}`}>
+              {type}
+            </span>
+          ))}
+        </div>
+      </div>
 
-<p>{pokemon.ability.join(", ")}</p>
-
-<p>{pokemon.hp}</p>
-<p>{pokemon.attack}</p>
-<p>{pokemon.defense}</p>
-<p>{pokemon.specialAttack}</p>
-<p>{pokemon.specialDefense}</p>
-<p>{pokemon.speed}</p>   */}
-        {/* <div>
-  {pokemon.weaknesses.map((type) => (
-    <span key={type}>
-      {type}
-    </span>
+      {index !== pokemon.evolution.length - 1 && (
+        <span className="evo-arrow">❯❯</span>
+      )}
+    </React.Fragment>
   ))}
-</div>     */}
-          
+</div>
+        
         
         </div>
   );
